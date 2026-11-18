@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão Escolar - Tudo em seu lugar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #121212;
@@ -65,8 +65,15 @@
             background-color: var(--card-bg); border: 1px solid var(--border);
             border-radius: 8px; padding: 20px;
         }
-        .card h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 400; color: #fff; }
-        .card p { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px;}
+        /* Mudança na fonte dos números para ficarem "diretos" */
+        .card h2 { 
+            font-family: 'Inter', sans-serif; 
+            font-size: 36px; 
+            font-weight: 600; 
+            color: #fff; 
+            line-height: 1; 
+        }
+        .card p { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px;}
 
         /* Áreas de Conteúdo */
         .content-section { display: none; }
@@ -76,17 +83,16 @@
         .info-box h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: #fff; margin-bottom: 10px; font-weight: 400; }
         .info-box p { color: var(--text-muted); font-size: 14px; max-width: 800px; }
 
-        /* Formulários e Listas */
+        /* Formulários */
         .form-group { display: flex; gap: 10px; margin-top: 20px; margin-bottom: 20px; flex-wrap: wrap; }
         input, select, textarea {
             background-color: var(--bg-color); border: 1px solid var(--border);
             color: #fff; padding: 12px; border-radius: 6px; font-family: 'Inter', sans-serif; width: 100%;
         }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); }
-        textarea { resize: vertical; min-height: 80px; }
         
-        .input-nome { flex: 2; min-width: 200px; }
-        .input-turma { flex: 1; min-width: 120px; }
+        .input-nome { flex: 3; min-width: 200px; }
+        .input-turma { flex: 1; min-width: 100px; max-width: 150px; } /* Campo da sala fica menor */
         .select-aluno { flex: 1.5; min-width: 200px; }
         .input-motivo { flex: 2; min-width: 200px; }
         
@@ -96,20 +102,66 @@
         }
         button.btn-primary:hover { background-color: #fff; }
 
+        /* Listas e Itens (CORRIGIDO) */
         .lista-itens { margin-top: 20px; }
-        .item { background-color: var(--card-bg); padding: 15px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid var(--accent); position: relative; }
-        .item strong { color: #fff; display: block; margin-bottom: 5px; font-size: 15px; }
-        .item .turma-tag { background-color: #333; color: #ccc; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-left: 10px; vertical-align: middle; }
-        .item span { color: var(--text-muted); font-size: 14px; display: block; margin-top: 5px; }
-        .btn-excluir { background:none; border:none; color:#f44336; cursor:pointer; font-size:12px; position: absolute; right: 15px; top: 15px; }
-        .btn-excluir:hover { text-decoration: underline; }
+        .item { 
+            background-color: var(--card-bg); 
+            padding: 15px 20px; 
+            border-radius: 6px; 
+            margin-bottom: 10px; 
+            border-left: 3px solid var(--accent); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+        
+        .item-info { 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+            flex-wrap: wrap;
+        }
+        
+        .item-nome { 
+            color: #fff; 
+            font-weight: 500; 
+            font-size: 16px; 
+        }
+        
+        .item-turma { 
+            color: var(--text-muted); 
+            font-size: 14px; 
+            background-color: rgba(255,255,255,0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .item-motivo {
+            color: #ccc;
+            font-size: 14px;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .btn-excluir { 
+            background: none; 
+            border: none; 
+            color: #f44336; 
+            cursor: pointer; 
+            font-size: 13px; 
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .btn-excluir:hover { color: #ff7961; text-decoration: underline; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (max-width: 768px) {
             .dashboard-cards { grid-template-columns: repeat(2, 1fr); }
             .hero h1 { font-size: 32px; }
-            .input-nome, .input-turma, .select-aluno, .input-motivo { flex: 100%; }
+            .input-nome, .input-turma, .select-aluno, .input-motivo { flex: 100%; max-width: none; }
+            .item { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .btn-excluir { align-self: flex-end; }
         }
     </style>
 </head>
@@ -126,7 +178,6 @@
         <p>Um espaço para acompanhar a vida escolar, registrar decisões e manter a equipe em sintonia.</p>
     </div>
 
-    <!-- Menu de Abas -->
     <div class="tabs">
         <button class="tab-btn active" onclick="mudarAba('visao')">Visão geral</button>
         <button class="tab-btn" onclick="mudarAba('cadastros')">Cadastros</button>
@@ -135,7 +186,6 @@
         <button class="tab-btn" onclick="mudarAba('registros')">Registros</button>
     </div>
 
-    <!-- Cartões de Status -->
     <div class="dashboard-cards">
         <div class="card">
             <h2 id="count-alunos">0</h2>
@@ -163,7 +213,7 @@
         </div>
         <div class="info-box">
             <h3>Como usar</h3>
-            <p>Siga este caminho simples para manter a rotina escolar organizada. Comece cadastrando os alunos e suas respectivas turmas na aba "Cadastros" para que eles fiquem disponíveis nas outras opções.</p>
+            <p>Siga este caminho simples para manter a rotina escolar organizada. Comece cadastrando os alunos e suas respectivas salas na aba "Cadastros" para que eles fiquem disponíveis nas outras opções.</p>
         </div>
     </div>
 
@@ -171,10 +221,10 @@
     <div id="aba-cadastros" class="content-section">
         <div class="info-box">
             <h3>Cadastrar Novo Aluno</h3>
-            <p>Adicione o nome e a turma do aluno. Ele ficará disponível para seleção em todas as outras abas.</p>
+            <p>Adicione o nome e a sala do aluno.</p>
             <div class="form-group">
-                <input type="text" id="input-nome-aluno" class="input-nome" placeholder="Nome completo do aluno">
-                <input type="text" id="input-turma-aluno" class="input-turma" placeholder="Turma (ex: 9º A)">
+                <input type="text" id="input-nome-aluno" class="input-nome" placeholder="Nome do aluno">
+                <input type="text" id="input-turma-aluno" class="input-turma" placeholder="Sala (ex: 9)">
                 <button class="btn-primary" onclick="cadastrarAluno()">Cadastrar</button>
             </div>
         </div>
@@ -185,7 +235,7 @@
     <div id="aba-atas" class="content-section">
         <div class="info-box">
             <h3>Registrar Ata</h3>
-            <p>Selecione o aluno e descreva o que ele fez ou o motivo da ata.</p>
+            <p>Selecione o aluno e descreva o que ele fez.</p>
             <div class="form-group">
                 <select id="select-aluno-ata" class="select-aluno">
                     <option value="">Selecione o aluno...</option>
@@ -201,7 +251,7 @@
     <div id="aba-advertencias" class="content-section">
         <div class="info-box">
             <h3>Registrar Advertência</h3>
-            <p>Selecione o aluno e descreva a infração cometida.</p>
+            <p>Selecione o aluno e descreva a infração.</p>
             <div class="form-group">
                 <select id="select-aluno-advertencia" class="select-aluno">
                     <option value="">Selecione o aluno...</option>
@@ -217,7 +267,7 @@
     <div id="aba-registros" class="content-section">
         <div class="info-box">
             <h3>Registro Geral</h3>
-            <p>Anotações gerais sobre o aluno (elogios, ocorrências leves, etc).</p>
+            <p>Anotações gerais sobre o aluno.</p>
             <div class="form-group">
                 <select id="select-aluno-registro" class="select-aluno">
                     <option value="">Selecione o aluno...</option>
@@ -232,15 +282,13 @@
 </div>
 
 <script>
-    // --- ESTADO DO SISTEMA ---
     let sistema = {
-        alunos: [], // Agora salva { nome: "João", turma: "9º A" }
+        alunos: [],
         atas: [],
         advertencias: [],
         registros: []
     };
 
-    // --- SALVAR E CARREGAR DADOS ---
     function salvarDados() {
         localStorage.setItem('gestao_escolar_dados_v2', JSON.stringify(sistema));
         atualizarDashboard();
@@ -252,19 +300,12 @@
         const salvos = localStorage.getItem('gestao_escolar_dados_v2');
         if (salvos) {
             sistema = JSON.parse(salvos);
-            
-            // Correção para quem já tinha dados antigos (só o nome salvo)
-            if (sistema.alunos.length > 0 && typeof sistema.alunos[0] === 'string') {
-                sistema.alunos = sistema.alunos.map(nome => ({ nome: nome, turma: "Sem turma" }));
-                salvarDados();
-            }
         }
         atualizarDashboard();
         atualizarSelects();
         renderizarListas();
     }
 
-    // --- NAVEGAÇÃO DE ABAS ---
     function mudarAba(aba) {
         document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -273,7 +314,6 @@
         event.target.classList.add('active');
     }
 
-    // --- DASHBOARD ---
     function atualizarDashboard() {
         document.getElementById('count-alunos').innerText = sistema.alunos.length;
         document.getElementById('count-atas').innerText = sistema.atas.length;
@@ -281,7 +321,6 @@
         document.getElementById('count-registros').innerText = sistema.registros.length;
     }
 
-    // --- CADASTRAR ALUNO ---
     function cadastrarAluno() {
         const inputNome = document.getElementById('input-nome-aluno');
         const inputTurma = document.getElementById('input-turma-aluno');
@@ -290,11 +329,10 @@
         const turma = inputTurma.value.trim();
 
         if (nome === "" || turma === "") {
-            alert("Por favor, preencha o nome e a turma do aluno.");
+            alert("Por favor, preencha o nome e a sala do aluno.");
             return;
         }
 
-        // Salva como um objeto com nome e turma
         sistema.alunos.push({ nome: nome, turma: turma });
         
         inputNome.value = ""; 
@@ -302,7 +340,6 @@
         salvarDados();
     }
 
-    // --- ATUALIZAR OS MENUS SUSPENSOS (SELECTS) ---
     function atualizarSelects() {
         const selects = [
             document.getElementById('select-aluno-ata'),
@@ -315,14 +352,13 @@
             
             sistema.alunos.forEach((aluno, index) => {
                 const option = document.createElement('option');
-                option.value = index; // O valor será a posição do aluno na lista
-                option.textContent = `${aluno.nome} (${aluno.turma})`; // Mostra nome e turma
+                option.value = index;
+                option.textContent = `${aluno.nome} (Sala ${aluno.turma})`;
                 select.appendChild(option);
             });
         });
     }
 
-    // --- REGISTRAR ITENS (Atas, Advertências, Registros) ---
     function registrarItem(tipo) {
         let selectElement, motivoElement, listaDestino;
 
@@ -344,15 +380,14 @@
         const motivo = motivoElement.value.trim();
 
         if (alunoIndex === "") {
-            alert("Por favor, selecione um aluno. Se a lista estiver vazia, cadastre um aluno primeiro.");
+            alert("Selecione um aluno.");
             return;
         }
         if (motivo === "") {
-            alert("Por favor, descreva o que o aluno fez.");
+            alert("Descreva o que o aluno fez.");
             return;
         }
 
-        // Pega os dados do aluno selecionado
         const alunoSelecionado = sistema.alunos[alunoIndex];
 
         listaDestino.push({
@@ -368,21 +403,24 @@
         salvarDados();
     }
 
-    // --- RENDERIZAR AS LISTAS NA TELA ---
     function renderizarListas() {
-        // Lista de Alunos
+        // Lista de Alunos (Agora com design limpo lado a lado)
         const containerAlunos = document.getElementById('lista-alunos');
         containerAlunos.innerHTML = sistema.alunos.length === 0 ? '<p style="color:#666;">Nenhum aluno cadastrado ainda.</p>' : '';
+        
         sistema.alunos.forEach((aluno, index) => {
             containerAlunos.innerHTML += `
                 <div class="item">
+                    <div class="item-info">
+                        <span class="item-nome">${aluno.nome}</span>
+                        <span class="item-turma">Sala: ${aluno.turma}</span>
+                    </div>
                     <button class="btn-excluir" onclick="removerAluno(${index})">Excluir</button>
-                    <strong>${aluno.nome} <span class="turma-tag">${aluno.turma}</span></strong>
                 </div>
             `;
         });
 
-        // Função auxiliar para renderizar listas de ocorrências
+        // Função para renderizar ocorrências (Atas, Advertências, Registros)
         function renderizarOcorrencias(lista, idContainer, corBorda) {
             const container = document.getElementById(idContainer);
             if (lista.length === 0) {
@@ -392,10 +430,13 @@
             container.innerHTML = '';
             lista.forEach(item => {
                 container.innerHTML += `
-                    <div class="item" style="border-left-color: ${corBorda};">
-                        <strong>${item.alunoNome} <span class="turma-tag">${item.alunoTurma}</span></strong>
-                        <span><b>O que fez:</b> ${item.motivo}</span>
-                        <span style="font-size:12px; margin-top:8px; color:#555;">Registrado em: ${item.data}</span>
+                    <div class="item" style="border-left-color: ${corBorda}; flex-direction: column; align-items: flex-start;">
+                        <div class="item-info">
+                            <span class="item-nome">${item.alunoNome}</span>
+                            <span class="item-turma">Sala: ${item.alunoTurma}</span>
+                            <span style="color:#555; font-size:12px; margin-left: auto;">${item.data}</span>
+                        </div>
+                        <span class="item-motivo"><b>O que fez:</b> ${item.motivo}</span>
                     </div>
                 `;
             });
@@ -406,15 +447,13 @@
         renderizarOcorrencias(sistema.registros, 'lista-registros', '#2196f3'); // Azul
     }
 
-    // --- REMOVER ALUNO ---
     function removerAluno(index) {
-        if (confirm("Tem certeza que deseja excluir este aluno? Os registros antigos dele continuarão salvos no histórico.")) {
+        if (confirm("Tem certeza que deseja excluir este aluno?")) {
             sistema.alunos.splice(index, 1);
             salvarDados();
         }
     }
 
-    // Iniciar sistema
     window.onload = carregarDados;
 </script>
 </body>
